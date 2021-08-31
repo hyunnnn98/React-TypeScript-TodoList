@@ -1,46 +1,44 @@
-# Getting Started with Create React App
+# 테스트 코드 기반으로 작성하는 Todo List
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 비지니스 로직 테스트
+- 단위 테스트, E2E 테스트
+- 라이브러리 : jest, cypress
 
-## Available Scripts
+## 테스트 분류
+- `단위 테스트 (Unit Test)` 란?
+  - <b>작성한 애플리케이션에서 테스트 가능한 가장 작은 단위의 코드를 테스트하는 기법이다.</b>
+  - 여러 작은 단위의 테스트들이 독립적으로 true, false 를 판단하기 때문에 테스트가 실패했을 경우, 어느 부분이 문제인지를 빠르게 판단할 수 있지만 애플리케이션의 전체적인 flow가 정상임을 보장하지 않는다.
+<br>
+- `E2E 테스트 (End to End Test)` 란?
+  - <b>기능 테스트(Funtional Test)라고도 불리는 이 테스팅 기법은 말 그대로 끝에서 끝까지 테스트하는 기법이다.</b>
+  - 사용자가 직접 애플리케이션을 사용하는 것처럼 동작하도록 스크립트를 작성하고, 이것을 실제로 실행시켜보면서 개발자가 의도한대로 도작하는지 검증할 수 있다.
+  - lb) cypress, testcafe, nightwatch (現 회사에서는 testcafe 채택)
+<br>
+- `통합 테스트 (Integration Test)` 란?
+  - <b>애플리케이션에서 두 가지 이상의 요소가 함께 상호 작용할 때, 개발자가 의도한 대로 동작하는지 테스트하는 기법이다.</b>
+  - ex) Store에 연결(connect)된 Component를 테스트하는 경우 { Store ↔ Component }
+  > 🤔 하지만 두 가지 이상의 요소가 함께 상호 작용하는 부분은 맞지만, 결국 하나의 가정을 테스트하기 때문에 이것을 통합 테스트라고 말할 수 있을지 의문이다. 따라서 단위테스트와 통합 테스트의 경계는 모호하다..
 
-In the project directory, you can run:
+## 테스트의 기본 ルール
+테스트는 아래의 내용을 만족해야 한다.
+- 테스트 케이스(Test Case)는 반드시 `True`, `False`를 반환해야 한다.
+- 위의 True, False는 반드시 어떠한 `가정`을 통해 포함한다.
+- 개발자가 작성한 가정에 따라 출력된 <b>값(result)</b>이 <b>예상(expect)</b>한 값과 일치하는지에 따라 True, False가 결정된다.
+- 테스트의 결과는 외부에 있는 어떤 요소에 의해 결정되는 부분이 없어야 하며 <b>오로지 가정에 의해서만</b> 결정되어야 한다.
+- 즉, 가정이 변하지 않는 이상 테스트의 결과는 항상 동일해야 한다.
+- 가정은 테스트 케이스의 의도(개발자가 생각한 로직)를 포함하며 각 테스트 케이스 하나 당 <b>하나의 의도만을 포함</b>해야 한다.
 
-### `npm start`
+## 비지니스 로직과 UI 렌더링의 분리
+- 테스트를 하기 전, 우선적으로 비지니스 로직 설계가 제대로 되어야 한다.
+- 하지만,
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## 라이브러리 설치
+```
+$ npm install --save-dev @testing-library/react-hooks
+$ npm install --save-dev axios-mock-adapter
+```
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+- `@testing-library/react-hooks` 란?
+  - react hooks를 테스트 하기 위해 도움을 주는 라이브러리
+- `axios-mock-adapter` 란?
+  -  axios를 목킹하여 실제로 서버에 요청하지 않고 로컬에서 서버로부터 데이터를 받아온 척 해주는 라이브러리
